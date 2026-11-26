@@ -22,10 +22,11 @@ predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Ed
 with left1:
   st.title(":grey[Depression Prevalance in Relation to Employment Deprivation in England]")
   metric=st.selectbox("Predictor", predictor_scores)
-  fig = px.scatter(dataframe,x=metric, y=y_axis, hover_name="ICB26NM", trendline="old")
+  fig = px.scatter(dataframe,x=metric, y=y_axis, hover_name="ICB26NM", trendline="ols")
   st.plotly_chart(fig)
 
 
 with right1:
   correlation=dataframe[predictor_scores + [y_axis]].corr(method="spearman")
   correlation_heatmap=px.imshow(correlation, text_auto=".2f", color_continuous_scale="curl",zmin=-1,zmax=1)
+  st.plotly_chart(correlation_heatmap)
