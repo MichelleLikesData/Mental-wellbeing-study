@@ -10,17 +10,19 @@ Original file is located at
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import requests
 
 
 dataframe= pd.read_csv("depression_vs_deprivation.csv")
 y_axis="Percentage Prevalance of Depression (%)"
 
-left1, right1=st.columns(2)
+left1, right1, right2 =st.columns(2)
 
 predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Education Score"]
 
 with left1:
   st.title(":grey[Depression Prevalance in Relation to Employment Deprivation in England]")
+  st.markdown("<br><br>",unsafe_allow_html=True)
   metric=st.selectbox("Predictor", predictor_scores)
   fig = px.scatter(dataframe,x=metric, y=y_axis, hover_name="ICB26NM", trendline="ols")
   st.plotly_chart(fig)
@@ -29,4 +31,21 @@ with left1:
 with right1:
   correlation=dataframe[predictor_scores + [y_axis]].corr(method="spearman")
   correlation_heatmap=px.imshow(correlation, text_auto=".2f", color_continuous_scale="curl",zmin=-1,zmax=1)
-  st.plotly_chart(correlation_heatmap)
+  correlation_heatmap.update_layout(height=500,font=dict(size=14))
+  correlation_heatmap.update_traces(textfont_size=14)
+  correlation_heatmap.update_xaxes(tickangle=-45)
+  st.plotly_chart(correlation_heatmap, use_container_width=True)
+
+icb_boundary_lines="https://hub.arcgis.com/api/v3/datasets/bebf631bb1ac40cf9ec7dc060897ca99_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1"
+icb_geojson=requests.get(geo_url,timeout=60).json()
+
+with right2:
+  map_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
+                               featureidkey="properties.ICB26CD",color=y_axis,hover_name="ICB26NM",
+                               color_continuous_scale="Cividis",
+                               map_style="carto-positron-nolabels",
+                               center={"lat":52.5, "lon":-1.5},
+                               zoom=5,
+                               opacity=0.75)
+  map_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
+  st.plotly_chart(map_figure,use_container_width=True)
