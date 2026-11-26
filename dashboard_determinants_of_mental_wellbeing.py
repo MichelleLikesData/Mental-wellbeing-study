@@ -13,12 +13,19 @@ import streamlit as st
 
 
 dataframe= pd.read_csv("depression_vs_deprivation.csv")
+y_axis="Percentage Prevalance of Depression (%)"
+
+left1, right1=st.columns(2)
 
 predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Education Score"]
 
-st.title("Depression Prevalance in Relation to Employment Deprivation in England")
+with left1:
+  st.title(":grey[Depression Prevalance in Relation to Employment Deprivation in England]")
+  metric=st.selectbox("Predictor", predictor_scores)
+  fig = px.scatter(dataframe,x=metric, y=y_axis, hover_name="ICB26NM", trendline="old")
+  st.plotly_chart(fig)
 
-metric=st.selectbox("Predictor", predictor_scores)
 
-fig = px.scatter(dataframe,x=metric, y="Percentage Prevalance of Depression", hover_name="ICB26NM")
-st.plotly_chart(fig)
+with right1:
+  correlation=dataframe[predictor_scores + [y_axis]].corr(method="spearman")
+  correlation_heatmap=px.imshow(correlation, text_auto=".2f", color_continuous_scale="curl",zmin=-1,zmax=1)
