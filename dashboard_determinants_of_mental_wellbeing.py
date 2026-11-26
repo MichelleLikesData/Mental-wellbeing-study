@@ -37,7 +37,7 @@ with right1:
   correlation_heatmap.update_xaxes(tickangle=-45)
   st.plotly_chart(correlation_heatmap, use_container_width=True)
 
-icb_boundary_lines="https://hub.arcgis.com/api/v3/datasets/bebf631bb1ac40cf9ec7dc060897ca99_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1"
+icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
 icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
 
 with right2:
@@ -50,3 +50,14 @@ with right2:
                                opacity=0.75)
   map_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
   st.plotly_chart(map_figure,use_container_width=True)
+
+
+print(icb_geojson["features"][0])
+
+import requests
+
+icb_boundary_lines="https://hub.arcgis.com/api/v3/datasets/bebf631bb1ac40cf9ec7dc060897ca99_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1"
+icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
+
+
+print(icb_geojson["features"][0])
