@@ -11,6 +11,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 import requests
+import geopandas as gpd
+import json
 
 st.set_page_config(layout="wide")
 
@@ -38,7 +40,8 @@ with right1:
   st.plotly_chart(correlation_heatmap, use_container_width=True)
 
 icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
-icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
+icb_shapes = gpd.read_file(icb_boundary_lines).to_crs(4326)
+icb_geojson = json.loads(icb_shapes.to_json())
 
 with right2:
   map_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
@@ -56,7 +59,7 @@ print(icb_geojson["features"][0])
 
 import requests
 
-icb_boundary_lines="https://hub.arcgis.com/api/v3/datasets/bebf631bb1ac40cf9ec7dc060897ca99_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1"
+icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
 icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
 
 
