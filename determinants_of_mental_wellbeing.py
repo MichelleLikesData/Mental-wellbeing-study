@@ -131,7 +131,7 @@ merged_table=pd.read_sql(merged_table_code,con)
 
 #cleaning
 merged_table=merged_table.dropna(subset=["ICB26CD"])
-namedict={"weighted_deprivation_score":"Deprivation Score","weighted_income_score":"Income Score", "weighted_employment_score":"Employment Score", "weighted_education_score":"Education Score", "Prevalence (%)":"Percentage Prevelance of Depression"}
+namedict={"weighted_deprivation_score":"Deprivation Score","weighted_income_score":"Income Score", "weighted_employment_score":"Employment Score", "weighted_education_score":"Education Score", "Prevalence (%)":"Percentage Prevalance of Depression"}
 merged_table=merged_table.rename(columns=namedict)
 display(merged_table)
 merged_table.dtypes
@@ -148,7 +148,7 @@ scores=["Deprivation Score","Income Score","Employment Score","Education Score"]
 
 fig, axes = plt.subplots(1,4, figsize=(15,5), sharey=True)
 for axis, score in zip(axes, scores):
-  sns.regplot(data=merged_table, x=score, y="Percentage Prevelance of Depression",ax=axis)
+  sns.regplot(data=merged_table, x=score, y="Percentage Prevalance of Depression",ax=axis)
   axis.set_title(score)
 
 
@@ -176,15 +176,6 @@ OKABE_ITO = [
 
 
 
-# plt.rcParams.update() - add some default settings applied to every figure in the notebook
-
-#i think i need to show a line chart for each, and then a correlation heatmap
-#i need to also create an interactive map
 
 
-#def show_plots(metric):
- # px.scatter(merged_table, x=metric, y="Percentage Prevelance of Depression", hover_name="ICB26NM").display()
-
-#interact(show_plots, metric=["Deprivation Score","Income Score","Employment Score","Education Score"])
-
-merged_table.to_csv("depression_vs_deprivation.csv,index=False")
+merged_table.to_csv("depression_vs_deprivation.csv",index=False)
