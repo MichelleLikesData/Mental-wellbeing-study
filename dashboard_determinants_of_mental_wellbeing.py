@@ -16,7 +16,7 @@ import requests
 dataframe= pd.read_csv("depression_vs_deprivation.csv")
 y_axis="Percentage Prevalance of Depression (%)"
 
-left1, right1, right2 =st.columns(2)
+left1, right1, right2 =st.columns(3)
 
 predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Education Score"]
 
