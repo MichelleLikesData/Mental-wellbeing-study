@@ -12,6 +12,7 @@ import plotly.express as px
 import streamlit as st
 import requests
 
+st.set_page_config(layout="wide")
 
 dataframe= pd.read_csv("depression_vs_deprivation.csv")
 y_axis="Percentage Prevalance of Depression (%)"
@@ -37,7 +38,7 @@ with right1:
   st.plotly_chart(correlation_heatmap, use_container_width=True)
 
 icb_boundary_lines="https://hub.arcgis.com/api/v3/datasets/bebf631bb1ac40cf9ec7dc060897ca99_0/downloads/data?format=geojson&spatialRefId=4326&where=1%3D1"
-icb_geojson=requests.get(geo_url,timeout=60).json()
+icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
 
 with right2:
   map_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
