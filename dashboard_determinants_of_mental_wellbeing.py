@@ -42,8 +42,8 @@ with bottom_right1:
 
 
 
-icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
-icb_shapes = gpd.read_file(icb_boundary_lines).to_crs(4326)
+
+icb_shapes = gpd.read_file("Integrated_Care_Board_Boundaries").to_crs(4326)
 icb_geojson = json.loads(icb_shapes.to_json())
 
 with bottom_right2:
@@ -76,3 +76,8 @@ icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
 
 
 print(icb_geojson["features"][0])
+
+import requests
+url ="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
+print(requests.get(url, timeout=60).status_code)
+print(requests.get(url, headers={"Range": "bytes=0-1"}, timeout=60).status_code)
