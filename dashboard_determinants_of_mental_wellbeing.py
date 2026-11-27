@@ -55,7 +55,7 @@ with bottom_right2:
                                center={"lat":52.5, "lon":-1.5},
                                zoom=5,
                                opacity=0.75)
-  deprivation_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
+  deprivation_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0),coloraxis_colorbar=dict(title="Depression (%)"))
   st.plotly_chart(deprivation_figure,use_container_width=True)
 
 with right2:
