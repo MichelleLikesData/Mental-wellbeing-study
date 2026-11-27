@@ -26,6 +26,9 @@ predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Ed
 with left1:
    st.title(":grey[Depression Prevalence in Relation to Employment Deprivation in England]")
    st.markdown("<br><br>",unsafe_allow_html=True)
+   st.markdown("The visualisations on this page give an indication of the relationship between prevalence of depression in England with employment-related deprivation scores, arranged by ICB")
+   st.markdown("<br><br>",unsafe_allow_html=True)
+   st.markdown("Instructions: Use the dropdown list to choose a deprivation domain score. This will be applied to the scatter plot and Deprivation Score map")
 
 with bottom_left1:
   metric=st.selectbox("Predictor", predictor_scores)
