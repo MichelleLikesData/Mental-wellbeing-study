@@ -43,7 +43,7 @@ with bottom_right1:
 
 
 
-icb_shapes = gpd.read_file("Integrated_Care_Board_Boundaries").to_crs(4326)
+icb_shapes = gpd.read_file("Integrated_Care_Board_Boundaries.json").to_crs(4326)
 icb_geojson = json.loads(icb_shapes.to_json())
 
 with bottom_right2:
