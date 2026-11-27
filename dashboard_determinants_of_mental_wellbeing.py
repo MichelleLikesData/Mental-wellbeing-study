@@ -59,8 +59,8 @@ with bottom_right2:
 
 with right1:
     score_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
-                               featureidkey="properties.ICB26CD",color=y_axis,hover_name="ICB26NM",
-                               color=predictor_scores,
+                               featureidkey="properties.ICB26CD",hover_name="ICB26NM",
+                               color=metric,
                                color_continuous_scale="Viridis",
                                map_style="carto-positron-nolabels",
                                center={"lat":52.5, "lon":-1.5},
