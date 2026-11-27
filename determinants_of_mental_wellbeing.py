@@ -29,7 +29,7 @@ pio.renderers.default="colab"
 
 !pip install streamlit
 
-import streamlit as st
+
 
 
 
@@ -131,7 +131,7 @@ merged_table=pd.read_sql(merged_table_code,con)
 
 #cleaning
 merged_table=merged_table.dropna(subset=["ICB26CD"])
-namedict={"weighted_deprivation_score":"Deprivation Score","weighted_income_score":"Income Score", "weighted_employment_score":"Employment Score", "weighted_education_score":"Education Score", "Prevalence (%)":"Percentage Prevalance of Depression (%)"}
+namedict={"weighted_deprivation_score":"Deprivation Score","weighted_income_score":"Income Score", "weighted_employment_score":"Employment Score", "weighted_education_score":"Education Score", "Prevalence (%)":"Percentage Prevalence of Depression (%)"}
 merged_table=merged_table.rename(columns=namedict)
 display(merged_table)
 merged_table.dtypes
@@ -148,7 +148,7 @@ scores=["Deprivation Score","Income Score","Employment Score","Education Score"]
 
 fig, axes = plt.subplots(1,4, figsize=(15,5), sharey=True)
 for axis, score in zip(axes, scores):
-  sns.regplot(data=merged_table, x=score, y="Percentage Prevalance of Depression (%)",ax=axis)
+  sns.regplot(data=merged_table, x=score, y="Percentage Prevalence of Depression (%)",ax=axis)
   axis.set_title(score)
 
 
@@ -159,20 +159,7 @@ for axis, score in zip(axes, scores):
 
 
 
-#Visualisation
 
-#colour-blind safe palette
-
-OKABE_ITO = [
-    "#0072B2",  # blue
-    "#E69F00",  # orange
-    "#009E73",  # bluish green
-    "#CC79A7",  # reddish purple
-    "#56B4E9",  # sky blue
-    "#D55E00",  # vermilion
-    "#F0E442",  # yellow
-    "#000000",  # black
-]
 
 
 

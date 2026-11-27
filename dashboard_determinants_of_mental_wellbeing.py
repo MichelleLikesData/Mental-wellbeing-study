@@ -10,23 +10,24 @@ Original file is located at
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-import requests
 import geopandas as gpd
 import json
 
 st.set_page_config(layout="wide")
 
 dataframe= pd.read_csv("depression_vs_deprivation.csv")
-y_axis="Percentage Prevalance of Depression (%)"
+y_axis="Percentage Prevalence of Depression (%)"
 
 left1, right1, right2 =st.columns(3)
 bottom_left1, bottom_right1, bottom_right2 =st.columns(3)
 
 predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Education Score"]
 
+with left1:
+   st.title(":grey[Depression Prevalence in Relation to Employment Deprivation in England]")
+   st.markdown("<br><br>",unsafe_allow_html=True)
+
 with bottom_left1:
-  st.title(":grey[Depression Prevalance in Relation to Employment Deprivation in England]")
-  st.markdown("<br><br>",unsafe_allow_html=True)
   metric=st.selectbox("Predictor", predictor_scores)
   fig = px.scatter(dataframe,x=metric, y=y_axis, hover_name="ICB26NM", trendline="ols")
   st.plotly_chart(fig)
@@ -57,7 +58,7 @@ with bottom_right2:
   deprivation_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
   st.plotly_chart(deprivation_figure,use_container_width=True)
 
-with right1:
+with right2:
     score_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
                                featureidkey="properties.ICB26CD",hover_name="ICB26NM",
                                color=metric,
@@ -68,16 +69,3 @@ with right1:
                                opacity=0.75)
     score_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
     st.plotly_chart(score_figure,use_container_width=True)
-
-import requests
-
-icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
-icb_geojson=requests.get(icb_boundary_lines,timeout=60).json()
-
-
-print(icb_geojson["features"][0])
-
-import requests
-url ="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
-print(requests.get(url, timeout=60).status_code)
-print(requests.get(url, headers={"Range": "bytes=0-1"}, timeout=60).status_code)
