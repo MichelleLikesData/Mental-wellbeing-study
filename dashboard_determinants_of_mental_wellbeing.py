@@ -20,10 +20,11 @@ dataframe= pd.read_csv("depression_vs_deprivation.csv")
 y_axis="Percentage Prevalance of Depression (%)"
 
 left1, right1, right2 =st.columns(3)
+bottom_left1, bottom_right1, bottom_right2 =st.columns(3)
 
 predictor_scores = ["Deprivation Score", "Income Score", "Employment Score", "Education Score"]
 
-with left1:
+with bottom_left1:
   st.title(":grey[Depression Prevalance in Relation to Employment Deprivation in England]")
   st.markdown("<br><br>",unsafe_allow_html=True)
   metric=st.selectbox("Predictor", predictor_scores)
@@ -31,7 +32,7 @@ with left1:
   st.plotly_chart(fig)
 
 
-with right1:
+with bottom_right1:
   correlation=dataframe[predictor_scores + [y_axis]].corr(method="spearman")
   correlation_heatmap=px.imshow(correlation, text_auto=".2f", color_continuous_scale="curl",zmin=-1,zmax=1)
   correlation_heatmap.update_layout(height=500,font=dict(size=14))
@@ -39,23 +40,34 @@ with right1:
   correlation_heatmap.update_xaxes(tickangle=-45)
   st.plotly_chart(correlation_heatmap, use_container_width=True)
 
+
+
 icb_boundary_lines="https://stg-arcgisazurecdataprod1.az.arcgis.com/exportfiles-1559-25372/Integrated_Care_Boards_April_2026_Boundaries_EN_BSC_-7481162941703437633.geojson?sv=2026-06-06&st=2026-11-26T23%3A24%3A35Z&se=2026-11-27T00%3A29%3A35Z&sr=b&sp=r&sig=3gkSe9ClHSR%2Fuxg3haHyW7LgZYgvI4wG3HrK5wFWdEw%3D"
 icb_shapes = gpd.read_file(icb_boundary_lines).to_crs(4326)
 icb_geojson = json.loads(icb_shapes.to_json())
 
-with right2:
-  map_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
+with bottom_right2:
+  deprivation_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
                                featureidkey="properties.ICB26CD",color=y_axis,hover_name="ICB26NM",
                                color_continuous_scale="Cividis",
                                map_style="carto-positron-nolabels",
                                center={"lat":52.5, "lon":-1.5},
                                zoom=5,
                                opacity=0.75)
-  map_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
-  st.plotly_chart(map_figure,use_container_width=True)
+  deprivation_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
+  st.plotly_chart(deprivation_figure,use_container_width=True)
 
-
-print(icb_geojson["features"][0])
+with right1:
+    score_figure=px.choropleth_map(dataframe, geojson=icb_geojson, locations="ICB26CD",
+                               featureidkey="properties.ICB26CD",color=y_axis,hover_name="ICB26NM",
+                               color=predictor_scores,
+                               color_continuous_scale="Viridis",
+                               map_style="carto-positron-nolabels",
+                               center={"lat":52.5, "lon":-1.5},
+                               zoom=5,
+                               opacity=0.75)
+    score_figure.update_layout(height=500,margin=dict(l=0,r=0,t=0,b=0))
+    st.plotly_chart(score_figure,use_container_width=True)
 
 import requests
 
